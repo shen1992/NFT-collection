@@ -38,6 +38,7 @@ contract CryptoDevs is ERC721Enumerable, Ownable {
     require(msg.value >= _price, 'Ether sent is not correct');
     tokenIds += 1;
     _safeMint(msg.sender, tokenIds);
+    tokenURI(tokenIds);
   }
 
   function mint() public payable onlyWhenNotPause {
@@ -46,6 +47,7 @@ contract CryptoDevs is ERC721Enumerable, Ownable {
     require(msg.value >= _price, 'Ether sent is not correct');
     tokenIds += 1;
     _safeMint(msg.sender, tokenIds);
+    tokenURI(tokenIds);
   }
 
   function _baseURI() internal view virtual override returns (string memory) {
