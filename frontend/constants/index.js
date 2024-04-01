@@ -69,6 +69,19 @@ export const abi = [
     "anonymous": false,
     "inputs": [
       {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "tokenIds",
+        "type": "uint256"
+      }
+    ],
+    "name": "CurrentTokenIds",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": true,
         "internalType": "address",
         "name": "previousOwner",
@@ -581,4 +594,4 @@ export const abi = [
     "type": "receive"
   }
 ];
-export const NFT_CONTRACT_ADDRESS = "0x4687aD2414c3b4DEe507734bDD4aB3D31c48080d";
+export const NFT_CONTRACT_ADDRESS = "0x59f84283044dc32b295538Bc5D1611c8c84F1497";

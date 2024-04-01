@@ -14,6 +14,9 @@ module.exports = {
     sepolia: {
       url: API_URL,
       accounts: [`0x${PRIVATE_KEY}`]
+    },
+    hardhat: {
+      chainId: 1337
     }
   },
   etherscan: {
