@@ -87,22 +87,6 @@ export default function Home() {
     }
   }
 
-  const connectWallet = async () => {
-    try {
-      const NFTToken = new ethers.Contract(
-        NFT_CONTRACT_ADDRESS,
-        abi,
-        providerRef.current
-      )
-      const wallet = await NFTToken.getAddress()
-      if (!!wallet) {
-        setWallet(wallet)
-      }
-    } catch (err) {
-      console.log('connectWallet get err', err)
-    }
-  }
-
   const getOwner = async () => {
     try {
       const NFTToken = new ethers.Contract(
@@ -111,7 +95,10 @@ export default function Home() {
         providerRef.current
       )
       const _owner = await NFTToken.owner()
+      console.log('_owner', _owner)
       const address = await signerRef.current.getAddress();
+      console.log('wallet', address)
+      setWallet(address)
       if (address.toLowerCase() === _owner.toLowerCase()) {
         setIsOwner(true);
       }
@@ -167,41 +154,31 @@ export default function Home() {
         providerRef.current
       )
       NFTToken.on('CurrentTokenIds', (tokenIds) => {
+        console.log('aaaa')
         setTokenIdsMinted(Number(tokenIds))
       })
+      const tokenIds = await NFTToken.tokenIds();
+      console.log('tokenIds', tokenIds)
+      setTokenIdsMinted(Number(tokenIds))
     } catch (err) {
       console.error(err);
     }
   };
 
   useEffect(() => {
-    initialEthers()
-    getTokenIdsMinted()
+    async function handlePresaleStatus() {
+      const _presaleStarted = await checkIfPresaleStarted()
+      if (_presaleStarted) {
+        checkIfPresaleEnded()
+      }
+    }
+    initialEthers().then(() => {
+      getTokenIdsMinted()
+      handlePresaleStatus()
+    })
   }, [])
 
-  useEffect(() => {
-    if (wallet) {
-      async function handlePresaleStatus() {
-        const _presaleStarted = await checkIfPresaleStarted()
-        if (_presaleStarted) {
-          checkIfPresaleEnded()
-        }
-      }
-      handlePresaleStatus()
-    } else {
-      connectWallet()
-    }
-  }, [wallet])
-
   const renderButton = () => {
-    if (!wallet) {
-      return (
-        <button onClick={connectWallet} className={styles.button}>
-          Connect your wallet
-        </button>
-      );
-    }
-
     if (loading) {
       return <button className={styles.button}>Loading...</button>;
     }

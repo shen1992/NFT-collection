@@ -3,6 +3,8 @@ pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "hardhat/console.sol";
+
 import "./IWhitelist.sol";
 
 contract CryptoDevs is ERC721Enumerable, Ownable {
@@ -42,9 +44,13 @@ contract CryptoDevs is ERC721Enumerable, Ownable {
     require(whitelist.whitelistedAddresses(msg.sender), 'You are not whitelisted');
     require(tokenIds < maxTokenIds, 'Exceeded maximum Crypto Devs supply');
     require(msg.value >= _price, 'Ether sent is not correct');
-    tokenIds += 1;
     _safeMint(msg.sender, tokenIds);
-    tokenURI(tokenIds);
+    console.log(
+      "The NFT ID %s has been minted to %s",
+      tokenIds,
+      msg.sender
+    );
+    tokenIds += 1;
     emit CurrentTokenIds(tokenIds);
   }
 
@@ -52,9 +58,13 @@ contract CryptoDevs is ERC721Enumerable, Ownable {
     require(presaleStarted && block.timestamp >= presaleEnded, 'Presale has not ended yet');
     require(tokenIds < maxTokenIds, 'Exceed maximum Crypto Devs supply');
     require(msg.value >= _price, 'Ether sent is not correct');
-    tokenIds += 1;
     _safeMint(msg.sender, tokenIds);
-    tokenURI(tokenIds);
+    console.log(
+      "The NFT ID %s has been minted to %s",
+      tokenIds,
+      msg.sender
+    );
+    tokenIds += 1;
     emit CurrentTokenIds(tokenIds);
   }
 
